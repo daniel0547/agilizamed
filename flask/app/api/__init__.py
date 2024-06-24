@@ -34,7 +34,7 @@ def order_queue_prompt(queue, new_element):
     completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role": "system", "content": "Você é um assistente hospitalar que define a ordem de atendimento de pacientes em uma fila de espera baseado na urgencia que cada paciente deve ser atendido de acordo com suas condições, sendo possivel que pacientes com condições mais urgentes sejam atendidos primeiro que pacientes que já estão na fila. Você deve responder em uma unica expressão qual a posição que o paciente deve assumir na fila de espera sem o ponto final. Exemplo: '1'."},
+        {"role": "system", "content": "Você é um assistente hospitalar que define a ordem de atendimento de pacientes em uma fila de espera baseado na urgencia que cada paciente deve ser atendido de acordo com suas condições, sendo possivel que pacientes com condições mais urgentes sejam atendidos primeiro que pacientes que já estão na fila. Você deve responder em uma unica expressão qual a posição o paciente deve assumir na fila de espera sendo a primeira posição a mais urgente sem o ponto final. Exemplo: '1'."},
         {"role": "user", "content": prompt}
     ]
     )
