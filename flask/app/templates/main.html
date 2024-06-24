@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triagem inteligente</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,600;1,6..12,500&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- CSS personalizado -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            overflow-x: hidden; /* Evita a barra de rolagem horizontal */
+        }
+
+        .container {
+            border-radius: 20px;
+            background-color: #f0ead6;
+            padding: 20px;
+            margin-top: 50px; /* Margem superior para centralizar verticalmente em telas maiores */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3); /* Adicionando sombreado */
+            border-radius: 25px;
+            width: 30%;
+        }
+
+        .titulo{
+            font-family: 'Raleway', sans-serif;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #0068b4;
+        }
+
+        .question-container{
+            max-width: 200px;
+        }
+
+        .question{
+            font-family: 'Raleway', sans-serif;
+        }
+
+        .question-title{
+            font-family: 'Raleway', sans-serif;
+            font-weight: bold;
+        }
+
+        .card{
+            border-radius: 20px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .description{
+            font-family: 'Raleway', sans-serif;
+            font-weight: bold;
+        }
+
+        .painline{
+            width: 100%;
+        }
+
+        .botao{
+            margin-top: 20px;
+            border-radius: 20px;
+            width: 100%;
+            height: 50px;
+            font-family: 'Raleway', sans-serif;
+            font-weight: bold;
+            background-color: #0077b8;
+            border-color: #0077b8;
+            &:hover{
+                background-color: #0077b8ca;
+                border-color: #0077b8ca;
+            }
+        }
+
+        textarea{
+            margin-bottom: 20px;
+        }
+
+        /* Estilos específicos para telas menores (celulares) */
+        @media (max-width: 767px) {
+            .container {
+                margin-top: 0; /* Remove a margem superior em telas menores */
+                border-radius: 0; /* Remove o arredondamento das bordas em telas menores */
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-left ml-3 titulo">Fila:</h2>
+    <div class="row">
+        <div class="col-md-12" id="queue">
+        </div>
+    </div>
+    <h2 class="text-left ml-3 titulo">Triagem inteligente</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="question-title">Nível de dor</h4>
+            <p class="question">Informe a intensidade da dor que está sentindo, na qual 1 é baixa e 10 é muito forte.</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="row">
+            <div class="col-md-12 document-container">
+                <input type="range" class="form-range painline" min="1" max="10" step="1" id="customRange">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p class="question">Nível de dor: <span id="painline-value"></span></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="question-title">Sintomas</h4>
+            <p class="question">Descreva aqui seus sintomas de forma resumida</p>
+        </div>
+    </div>
+
+    <!-- text area -->
+    <div class="row">
+        <div class="col-md-12">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="question-title">Doenças Pré-existentes</h4>
+            <p class="question">Informe a existencia de doenças já diagnosticadas</p>
+        </div>
+    </div>
+
+    <!-- text area -->
+    <div class="row">
+        <div class="col-md-12">
+            <textarea class="form-control" id="exampleFormControlTextarea2" rows="5"></textarea>
+        </div>
+    </div>
+
+    <!-- send button -->
+    <div class="row">
+        <div class="col-md-12">
+            <button id="continue" type="button" class="btn btn-primary botao">Enviar informações</button>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (opcional, se precisar de funcionalidades específicas do Bootstrap) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+
+<script>
+    var slider = document.getElementById("customRange");
+    var output = document.getElementById("painline-value");
+    let queue_json = [];
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+    }
+
+    buildCard = (element, position) => {
+        var card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = "<p><span class=\"description\">Posição:</span> " + position + "</p> <p><span class=\"description\">Nível de dor:</span> " + element.pain_level + "; <span class=\"description\">Sintomas:</span> " + element.sintomns + "</p> <p><span class=\"description\">Doenças pré-existentes:</span> " + element.diseases + "</p> <p><span class=\"description\">Especialidade:</span> " + element.speciality + "</p> <p><span class=\"description\">Tempo de consulta estimado:</span> " + element.time + "</p>";
+        return card;
+    }
+
+    buildQueue = (data) => {
+        var queue = document.getElementById("queue");
+        queue.innerHTML = "";
+        data.forEach(element => {
+            var card = buildCard(element, data.indexOf(element) + 1);
+            queue.appendChild(card);
+        });
+    }
+
+    getQueuePosition = async (data) => {
+        let queue = await fetch('https://agilizamed.online/api/order-queue', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({queue: queue_json, new_patient: data}),
+        });
+        return queue.json();
+    }
+
+    getNewElement = async () => {
+        var pain = slider.value;
+        var symptoms = document.getElementById("exampleFormControlTextarea1").value;
+        var preexistent = document.getElementById("exampleFormControlTextarea2").value;
+        var data = {
+            "patient": 
+            {
+                "pain_level": pain,
+                "sintomns": symptoms,
+                "diseases": preexistent
+            }
+        }
+        console.log(data);
+        let newElement = await fetch('https://agilizamed.online/api/build-patient', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        return newElement.json();
+    }
+
+    document.getElementById("continue").addEventListener("click", function(){
+        getNewElement().then(data => {
+            getQueuePosition(data).then(position => {
+                queue_json.splice(position, 0, data);
+                buildQueue(queue_json);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
