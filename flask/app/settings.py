@@ -13,5 +13,7 @@ app.secret_key = "UElvxzayo733SL2e73qd4MPezy4Dds"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://agilizamed:123405@localhost/agilizamed?charset=utf8mb4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+app.config['OPEN_AI_API_KEY'] = "sk-proj-RhyUL2yBkayNAIFyAoXMT3BlbkFJdcLrVfQivkWqmgSFNK9q"
+
 db = SQLAlchemy(app)
 

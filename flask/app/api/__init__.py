@@ -2,6 +2,7 @@ from flask import jsonify, Blueprint, request
 import openai
 import os
 from openai import OpenAI
+from settings import app
 
 api = Blueprint('api', __name__, template_folder='templates', static_folder='../static')
 
@@ -26,7 +27,7 @@ def describe_pacient(pacient):
     return f"O paciente tem {pacient['pain_level']} de dor, {pacient['diseases']} e descreveu os seguintes sintomas: {pacient['sintomns']} e vai ser atendido por um médico de {pacient['speciality']} por {pacient['time']}"
 
 def order_queue_prompt(queue, new_element):
-    client = OpenAI(api_key="sk-proj-RhyUL2yBkayNAIFyAoXMT3BlbkFJdcLrVfQivkWqmgSFNK9q")
+    client = OpenAI(api_key=app.config['OPEN_AI_API_KEY'])
     prompt = f"Novo paciente:\n{describe_pacient(new_element)}\nFila de espera:\n"
     for i, pacient in enumerate(queue):
         prompt += f"\n{i+1} - {describe_pacient(pacient)}"
@@ -41,7 +42,7 @@ def order_queue_prompt(queue, new_element):
     return completion.choices[0].message
 
 def send_prompt(prompt):
-    client = OpenAI(api_key="sk-proj-RhyUL2yBkayNAIFyAoXMT3BlbkFJdcLrVfQivkWqmgSFNK9q")
+    client = OpenAI(api_key=app.config['OPEN_AI_API_KEY'])
 
     completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
