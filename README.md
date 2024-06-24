@@ -13,8 +13,6 @@ set your openai api-key in app/settings.py
 
 ** Run with gunicorn **
 
-In webapp/
-
 `$ gunicorn -w 4 -b 127.0.0.1:5000 run:app`
 
 -w : number of worker
