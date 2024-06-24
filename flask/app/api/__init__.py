@@ -2,7 +2,7 @@ from flask import jsonify, Blueprint, request
 import openai
 import os
 from openai import OpenAI
-from settings import app
+from app.settings import app
 
 api = Blueprint('api', __name__, template_folder='templates', static_folder='../static')
 
