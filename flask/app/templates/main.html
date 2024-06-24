@@ -102,6 +102,7 @@
     <h2 class="text-left ml-3 titulo">Fila:</h2>
     <div class="row">
         <div class="col-md-12" id="queue">
+            <p class="question">Nenhum paciente na fila</p>
         </div>
     </div>
     <h2 class="text-left ml-3 titulo">Triagem inteligente</h2>
@@ -179,7 +180,7 @@
     buildCard = (element, position) => {
         var card = document.createElement("div");
         card.className = "card";
-        card.innerHTML = "<p><span class=\"description\">Posição:</span> " + position + "</p> <p><span class=\"description\">Nível de dor:</span> " + element.pain_level + "; <span class=\"description\">Sintomas:</span> " + element.sintomns + "</p> <p><span class=\"description\">Doenças pré-existentes:</span> " + element.diseases + "</p> <p><span class=\"description\">Especialidade:</span> " + element.speciality + "</p> <p><span class=\"description\">Tempo de consulta estimado:</span> " + element.time + "</p>";
+        card.innerHTML = "<p><span class=\"description\">Posição:</span> " + position + "</p> <p><span class=\"description\">Nível de dor:</span> " + element.pain_level + "</p> <p><span class=\"description\">Sintomas:</span> " + element.sintomns + "</p> <p><span class=\"description\">Doenças pré-existentes:</span> " + element.diseases + "</p> <p><span class=\"description\">Especialidade:</span> " + element.speciality + "</p> <p><span class=\"description\">Tempo de consulta estimado:</span> " + element.time + "</p>";
         return card;
     }
 
