@@ -30,6 +30,7 @@ def order_queue_prompt(queue, new_element):
     prompt = f"Novo paciente:\n{describe_pacient(new_element)}\nFila de espera:\n"
     for i, pacient in enumerate(queue):
         prompt += f"\n{i+1} - {describe_pacient(pacient)}"
+    print(prompt)
     completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
