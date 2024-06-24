@@ -14,6 +14,14 @@ def get_token():
     patient["speciality"], patient["time"] = response.content.split(";")
     return jsonify(patient)
 
+@api.route('/order-queue', methods=['POST'])
+def order_queue():
+    data = request.json
+    queue = data["queue"]
+    new_patient = data["new_patient"]
+    response = order_queue_prompt(queue, new_patient)
+    return jsonify(position=response.content)
+
 def describe_pacient(pacient):
     return f"O paciente tem {pacient['pain_level']} de dor, {pacient['diseases']} e descreveu os seguintes sintomas: {pacient['sintomns']} e vai ser atendido por um médico de {pacient['speciality']} por {pacient['time']}"
 
