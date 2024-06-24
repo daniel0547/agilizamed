@@ -54,22 +54,3 @@ def send_prompt(prompt):
 
 def build_prompt(pain_level, diseases, prompt):
     return f"O paciente tem {pain_level} de dor, {diseases} e descreveu os seguintes sintomas: {prompt}"
-
-def main():
-    queue = [
-       {'pain_level': '9', 'diseases': ['diabetes'], 'sintomns': 'corte profundo no pescoço', 'speciality': 'Cirurgia Geral', 'time': '01:00'},
-       {'pain_level': '9', 'diseases': ['hipertensão'], 'sintomns': 'tiro no pé', 'speciality': 'Cirurgia Geral', 'time': '01:00'}
-    ]
-    new_pacient = {'pain_level': '0', 'diseases': ['diabetes'], 'sintomns': 'cisto nas costas', 'speciality': 'Cirurgia Geral', 'time': '01:00'}
-    '''pacient = {
-        "pain_level": "9",
-        "diseases": ["diabetes"],
-        "sintomns": "facada na barriga"
-    }
-    prompt = build_prompt(pacient["pain_level"], pacient["diseases"], pacient["sintomns"])
-    response = send_prompt(prompt)
-    print(response.content)
-    pacient["speciality"], pacient["time"] = response.content.split(";")
-    print(pacient)
-    '''
-    print(order_queue_prompt(queue, new_pacient))
